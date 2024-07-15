@@ -1,0 +1,54 @@
+local gemsLabel = game:GetService("Players").LocalPlayer.PlayerGui.Lobby.CurrenciesFrame.GemAmount.CurrencyLayout.AmountLabel
+local UnitButton = game:GetService("Players").w3izzy.PlayerGui.Lobby.LeftSideFrame.Units.UnitText
+local ShopButton = game:GetService("Players").w3izzy.PlayerGui.Lobby.LeftSideFrame.Shop.UnitText
+
+-- Функция для добавления случайного количества камней
+local function addRandomGems()
+    local randomGems = math.random(1, 1000) -- Генерация случайного количества камней от 1 до 3
+    local currentGems = tonumber(gemsLabel.Text) or 0 -- Получение текущего количества камней и преобразование его в число
+    gemsLabel.Text = tostring(currentGems + randomGems) -- Добавление случайного количества камней к текущему количеству и обновление текста
+end
+
+    UnitButton.Text = "FastDuper"
+    ShopButton.Text = "FastDuper"
+
+-- Функция для телепортации игрока в случайное место внутри зоны части
+local function teleportRandomlyInPartZone(part)
+    local zoneSize = part.Size * 2 -- Увеличиваем размер зоны, чтобы часть полностью вмещала игрока
+    local newPosition = part.Position + Vector3.new(math.random(-zoneSize.X/2, zoneSize.X/2), 10, math.random(-zoneSize.Z/2, zoneSize.Z/2)) -- Генерируем случайную позицию внутри зоны части
+    game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(newPosition)) -- Телепортируем игрока в новую позицию
+end
+
+-- Создаем часть прямо над персонажем
+local function createPartAbovePlayer()
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            local part = Instance.new("Part")
+            part.Size = Vector3.new(10, 1, 10) -- Размер части
+            part.Position = humanoidRootPart.Position + Vector3.new(0, 50, 0) -- Позиция над персонажем
+            part.Anchored = true -- Фиксируем часть в мире
+            part.Parent = game.Workspace -- Делаем часть дочерним элементом Рабочего пространства
+            return part
+        end
+    end
+    return nil
+end
+
+-- Цикл для добавления камней каждые 500 миллисекунд и телепортации игрока внутрь зоны части
+while true do
+    addRandomGems() -- Вызов функции для добавления камней
+    wait(0.5) -- Задержка в 500 миллисекунд (0.5 секунды)
+    UnitButton.Text = "D#81JGc!7X"
+    UnitButton.Text = "M!x#L7C@"
+    local part = createPartAbovePlayer() -- Создание части над персонажем
+    ShopButton.Text = "M!x#L7C@"
+    ShopButton.Text = "D#81JGc!7X"
+    if part then
+        teleportRandomlyInPartZone(part) -- Телепортация игрока внутрь зоны части
+        part:Destroy() -- Уничтожение части после использования
+    else
+        warn("Не удалось создать часть над персонажем.")
+    end
+end
